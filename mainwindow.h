@@ -15,11 +15,17 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    QString operand;
+
 private slots:
 
     void btnNumClicked();
 
     void on_btnPoint_clicked();
+
+    void on_btnBackspace_clicked();
+
+    void on_btnClear_clicked();
 
 private:
     Ui::MainWindow *ui;

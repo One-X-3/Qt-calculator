@@ -24,22 +24,42 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+//数字键输入逻辑
 void MainWindow::btnNumClicked()
 {
-    QString str = ui->display->text();
-    str += qobject_cast<QPushButton*>(sender())->text();
+    QString digit = qobject_cast<QPushButton*>(sender())->text();
 
-    ui->display->setText(str);
-    //ui->statusbar->showMessage(qobject_cast<QPushButton*>(sender())->text() + "btn clicked");
+    if (digit == "0" && operand == "0")
+        digit = "";
+
+    if(operand == "0" && digit != "0")
+        operand = "";
+
+    operand += digit;
+
+    ui->display->setText(operand);
 }
 
-
+//小数点逻辑，一个数只能有一个小数点
 void MainWindow::on_btnPoint_clicked()
 {
-    QString str = ui->display->text();
-    if(!str.contains("."))
-        str += qobject_cast<QPushButton*>(sender())->text();
-    ui->display->setText(str);
+    if(!operand.contains("."))
+        operand += qobject_cast<QPushButton*>(sender())->text();
+    ui->display->setText(operand);
 
+}
+
+//退格逻辑，从左边去字符串长度-1
+void MainWindow::on_btnBackspace_clicked()
+{
+    operand = operand.left(operand.length() - 1);
+    ui->display->setText(operand);
+}
+
+//CLear键逻辑，清空
+void MainWindow::on_btnClear_clicked()
+{
+    operand.clear();
+    ui->display->setText(operand);
 }
 
