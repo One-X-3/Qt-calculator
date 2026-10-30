@@ -133,6 +133,15 @@ void MainWindow::on_btnClear_clicked()
     ui->statusbar->clearMessage();
 }
 
+// CE 键逻辑：仅清除当前输入的数字，保留之前的操作符和第一操作数
+void MainWindow::on_btnClearEntry_clicked()
+{
+    operand = "0";                 // 将当前输入重置为 "0"
+    ui->display->setText("0");     // 显示框归零
+    waitingForOperand = true;      // 标记等待新输入（这样用户按下一个数字时会覆盖这个 0）
+    ui->statusbar->showMessage("CE: 已清除当前输入", 2000); // 状态栏提示2秒
+}
+
 void MainWindow::btnBinaryOperatorclicked()
 {
     QString opcode = qobject_cast<QPushButton*>(sender())->text();
@@ -197,6 +206,30 @@ void MainWindow::btnUnaryOperatorClicked()
         leftOperand = 0;
         pendingOperator.clear();
         waitingForOperand = true;
+    }
+}
+
+// +/- 键逻辑：正负号切换
+void MainWindow::on_btnNegate_clicked()
+{
+    // 如果处于等待新输入的状态（比如刚按完运算符），默认输入一个 "-0"
+    if (waitingForOperand) {
+        operand = "-0";
+        ui->display->setText(operand);
+        waitingForOperand = false;
+        return;
+    }
+
+    // 如果是正常的数字
+    if (operand != "0") {
+        if (operand.startsWith("-")) {
+            // 如果是负数，去掉负号
+            operand.remove(0, 1);
+        } else {
+            // 如果是正数，加上负号
+            operand.prepend("-");
+        }
+        ui->display->setText(operand);
     }
 }
 

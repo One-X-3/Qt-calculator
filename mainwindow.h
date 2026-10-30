@@ -25,6 +25,8 @@ private slots:
     void on_btnBackspace_clicked();
     void on_btnClear_clicked();
     void on_btnEqual_clicked();
+    void on_btnClearEntry_clicked(); // 清除当前输入 (CE)
+    void on_btnNegate_clicked();     // 正负号切换 (+/-)
 
 private:
     Ui::MainWindow *ui;

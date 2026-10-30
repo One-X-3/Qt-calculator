@@ -13,32 +13,148 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">/* =========================================
+   全局基础设置（背景与默认字体）
+========================================= */
+QWidget {
+    background-color: #f3f3f3; /* 浅灰背景，衬托按键 */
+    /* 设置字体优先级：优先使用英文排版极佳的 Segoe UI，其次是微软雅黑 */
+    font-family: &quot;Segoe UI&quot;, &quot;Microsoft YaHei&quot;, &quot;PingFang SC&quot;, sans-serif;
+}
+
+/* =========================================
+   顶部显示框 (display)
+========================================= */
+QLineEdit#display {
+    background-color: transparent;
+    border: none;
+    color: #1a1a1a;           /* 深灰偏黑，比纯黑更柔和 */
+    font-size: 46px;          /* 放大数字，更有视觉冲击力 */
+    font-weight: 600;         /* 半粗体（比 bold 好看） */
+    padding-right: 12px;
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+
+/* =========================================
+   普通按钮（数字键、基本运算符）
+========================================= */
+QPushButton {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;  /* 极浅的灰色边框 */
+    border-radius: 12px;         /* 舒适的圆角 */
+    color: #333333;
+    font-size: 22px;            /* 放大按键文字 */
+    font-weight: 500;           /* 中等字重 */
+    margin: 4px;                /* 按键之间的缝隙 */
+}
+
+QPushButton:hover {
+    background-color: #f7f7f7;  /* 鼠标悬停微亮 */
+}
+
+QPushButton:pressed {
+    background-color: #e5e5e5;  /* 按下时变深 */
+    padding-top: 2px;           /* 制造一点点按压下沉的错觉 */
+    padding-left: 2px;
+}
+
+/* =========================================
+   特殊功能按钮（C, CE, 退格, 正负号, 百分号）
+   使用浅绿色底 + 深绿色字，与数字键区分
+========================================= */
+QPushButton#btnClear, 
+QPushButton#btnClearEntry, 
+QPushButton#btnBackspace,
+QPushButton#btnNegate,
+QPushButton#btnPercentage {
+    background-color: #e8f8f0;  /* 极浅的薄荷绿 */
+    color: #07C160;             /* 主色调绿 */
+    font-weight: bold;          /* 加粗提醒这是功能键 */
+}
+
+QPushButton#btnClear:hover, 
+QPushButton#btnClearEntry:hover, 
+QPushButton#btnBackspace:hover,
+QPushButton#btnNegate:hover,
+QPushButton#btnPercentage:hover {
+    background-color: #d1f2e1;
+}
+
+/* =========================================
+   等号按钮 (核心重点！使用高级深绿色)
+========================================= */
+QPushButton#btnEqual {
+    background-color: #07C160;  /* 高级绿色 */
+    color: #ffffff;             /* 白字 */
+    font-size: 26px;            /* 等号可以再大一点点 */
+    font-weight: bold;
+    border: none;
+}
+
+QPushButton#btnEqual:hover {
+    background-color: #06ad56;  /* 悬停时略微变深 */
+}
+
+QPushButton#btnEqual:pressed {
+    background-color: #059048;  /* 按下时更深 */
+    padding-top: 3px;
+    padding-left: 3px;
+}
+
+/* =========================================
+   单目运算按钮 (1/x, x^2, √)
+   让它们的颜色介于普通数字和清除键之间
+========================================= */
+QPushButton#btnReciprocal,
+QPushButton#btnSquare,
+QPushButton#btnSqrt {
+    color: #07C160;
+    background-color: #ffffff;
+}
+
+QPushButton#btnReciprocal:hover,
+QPushButton#btnSquare:hover,
+QPushButton#btnSqrt:hover {
+    background-color: #f0fbf5; /* 悬停时透出一点绿意 */
+}</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <property name="spacing">
-     <number>3</number>
+     <number>6</number>
     </property>
     <property name="leftMargin">
-     <number>1</number>
+     <number>15</number>
     </property>
     <property name="topMargin">
-     <number>1</number>
+     <number>15</number>
     </property>
     <property name="rightMargin">
-     <number>1</number>
+     <number>15</number>
     </property>
     <property name="bottomMargin">
-     <number>1</number>
+     <number>15</number>
     </property>
     <item>
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="3">
        <widget class="QPushButton" name="btnBackspace">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>⌫</string>
@@ -48,10 +164,19 @@
       <item row="2" column="2">
        <widget class="QPushButton" name="btnSqrt">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>√</string>
@@ -61,10 +186,19 @@
       <item row="1" column="2">
        <widget class="QPushButton" name="btnClear">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>C</string>
@@ -74,10 +208,19 @@
       <item row="1" column="0">
        <widget class="QPushButton" name="btnPercentage">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>%</string>
@@ -87,10 +230,19 @@
       <item row="4" column="0">
        <widget class="QPushButton" name="btnNum4">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>4</string>
@@ -100,10 +252,19 @@
       <item row="3" column="2">
        <widget class="QPushButton" name="btnNum9">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>9</string>
@@ -113,10 +274,19 @@
       <item row="5" column="1">
        <widget class="QPushButton" name="btnNum2">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>2</string>
@@ -126,10 +296,19 @@
       <item row="5" column="0">
        <widget class="QPushButton" name="btnNum1">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>1</string>
@@ -139,10 +318,19 @@
       <item row="3" column="0">
        <widget class="QPushButton" name="btnNum7">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>7</string>
@@ -152,10 +340,19 @@
       <item row="5" column="3">
        <widget class="QPushButton" name="btnAdd">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>+</string>
@@ -165,10 +362,19 @@
       <item row="6" column="3">
        <widget class="QPushButton" name="btnEqual">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>=</string>
@@ -178,10 +384,19 @@
       <item row="4" column="1">
        <widget class="QPushButton" name="btnNum5">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>5</string>
@@ -191,10 +406,19 @@
       <item row="4" column="2">
        <widget class="QPushButton" name="btnNum6">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>6</string>
@@ -204,10 +428,19 @@
       <item row="5" column="2">
        <widget class="QPushButton" name="btnNum3">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>3</string>
@@ -217,10 +450,19 @@
       <item row="3" column="1">
        <widget class="QPushButton" name="btnNum8">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>8</string>
@@ -230,10 +472,19 @@
       <item row="2" column="0">
        <widget class="QPushButton" name="btnReciprocal">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>1/x</string>
@@ -243,10 +494,19 @@
       <item row="6" column="1">
        <widget class="QPushButton" name="btnNum0">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>0</string>
@@ -256,10 +516,19 @@
       <item row="1" column="1">
        <widget class="QPushButton" name="btnClearEntry">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>CE</string>
@@ -269,10 +538,19 @@
       <item row="4" column="3">
        <widget class="QPushButton" name="btnSub">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>-</string>
@@ -282,10 +560,19 @@
       <item row="2" column="1">
        <widget class="QPushButton" name="btnSquare">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>x^2</string>
@@ -295,10 +582,19 @@
       <item row="6" column="2">
        <widget class="QPushButton" name="btnPoint">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>.</string>
@@ -308,10 +604,19 @@
       <item row="2" column="3">
        <widget class="QPushButton" name="btnDiv">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>/</string>
@@ -321,10 +626,19 @@
       <item row="6" column="0">
        <widget class="QPushButton" name="btnNegate">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>+/-</string>
@@ -334,10 +648,19 @@
       <item row="3" column="3">
        <widget class="QPushButton" name="btnMul">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
         </property>
         <property name="text">
          <string>×</string>
@@ -347,13 +670,28 @@
       <item row="0" column="0" colspan="4">
        <widget class="QLineEdit" name="display">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="maxLength">
+         <number>15</number>
+        </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
         </property>
         <property name="placeholderText">
          <string>0</string>
