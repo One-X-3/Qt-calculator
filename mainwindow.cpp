@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 #include <math.h>
+#include <QKeyEvent>
+#include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -29,6 +31,21 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->btnReciprocal, SIGNAL(clicked()),this,SLOT(btnUnaryOperatorClicked()));
     connect(ui->btnSquare, SIGNAL(clicked()),this,SLOT(btnUnaryOperatorClicked()));
     connect(ui->btnSqrt, SIGNAL(clicked()),this,SLOT(btnUnaryOperatorClicked()));
+
+    // 【新增】：让所有按钮都不抢占键盘焦点，保证按键事件统统交给主窗口处理
+        QList<QPushButton*> allButtons = this->findChildren<QPushButton*>();
+        for (QPushButton* btn : allButtons) {
+            btn->setFocusPolicy(Qt::NoFocus);
+        }
+
+        // 让显示框不可获取焦点，防止它拦截退格键
+        ui->display->setFocusPolicy(Qt::NoFocus);
+
+        // 让主窗口强制捕获所有键盘事件
+        this->setFocusPolicy(Qt::StrongFocus);
+
+        // 启动时让主窗口获取焦点
+        this->setFocus();
 
     ui->display->setText("0"); // 启动时显示0
 }
@@ -260,3 +277,54 @@ void MainWindow::on_btnEqual_clicked()
     }
 }
 
+// 键盘事件处理函数
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Backspace) {
+        ui->btnBackspace->animateClick(100); // 模拟按下100毫秒
+        return;
+    }
+
+    auto simulateClick = [](QPushButton *btn) {
+        if (!btn) return;
+        btn->setDown(true);
+
+        QTimer::singleShot(80, btn, [btn]() {
+            btn->setDown(false);
+            btn->click();
+        });
+    };
+
+    int key = event->key();
+
+        if (key == Qt::Key_Percent || (key == Qt::Key_5 && (event->modifiers() & Qt::ShiftModifier))) {
+            simulateClick(ui->btnPercentage);
+            return;
+        }
+
+    // 1. 数字键 0-9
+    if (key >= Qt::Key_0 && key <= Qt::Key_9 && !(key == Qt::Key_5 && (event->modifiers() & Qt::ShiftModifier))) {
+        QString btnName = QString("btnNum%1").arg(key - Qt::Key_0);
+        simulateClick(this->findChild<QPushButton*>(btnName));
+        return;
+    }
+
+    // 2. 运算符与功能键
+    switch (key) {
+        case Qt::Key_Plus:      simulateClick(ui->btnAdd); break;
+        case Qt::Key_Minus:     simulateClick(ui->btnSub); break;
+        case Qt::Key_Asterisk:  simulateClick(ui->btnMul); break;
+        case Qt::Key_Slash:     simulateClick(ui->btnDiv); break;
+        case Qt::Key_Return:
+        case Qt::Key_Enter:     simulateClick(ui->btnEqual); break;
+        case Qt::Key_Period:    simulateClick(ui->btnPoint); break;
+        case Qt::Key_Escape:    simulateClick(ui->btnClear); break;
+        case Qt::Key_Delete:    simulateClick(ui->btnClearEntry); break;
+        case Qt::Key_0 + Qt::KeypadModifier: simulateClick(ui->btnNum0); break;
+
+
+        default:
+            QMainWindow::keyPressEvent(event);
+            break;
+    }
+}
